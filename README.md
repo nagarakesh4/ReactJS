@@ -1,2 +1,2 @@
 # StickyNotes-React
-A sticky notes app built with ReactJS
+A flux paradigm app to be built using ReactJS.
