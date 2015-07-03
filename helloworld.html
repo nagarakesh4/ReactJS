@@ -20,74 +20,92 @@
 			
 			// no need of pragma to specify
 			/** @jsx React.DOM */
+			//top level component
 			var MessageJSX = React.createClass({
 				//here we can set the initial states
 				getInitialState: function() {
 					return {
-						isVisible: false,
-						textMessage: 'Hello World - ReactJS'
+						isVisible: true,
+						technologies: [
+									'Spring assists in making http calls',
+									'NodeJS is a full stack technology',
+									'AngularJS and Ember are on the same track??',
+									'ReactJS is powerful as it has its own DOM',
+									'Docker is powerful and is the future'
+								]
 					}
 				},
 
 				render: function(){
 					//here we can apply inline styles
 					var inlineStyles = {
-						display : this.state.isVisible ? 'block' : 'none'
-					};
+						display : this.state.isVisible ? 'block' : 'none',
+						marginTop : '20px'
+					}; 
+
+					// change the props of the submessage from here
+					var subMessage = "This is updated by the top level component";
+ 
+					//retrieve the above created map
+					var technologies = this.state.technologies.map(function(technology){
+						return <SubMessage message={technology}/>
+					});
+
 					// the state can also be set dynamically from the browsers console by reactComponentJSX.setState({isVisible: true,
 						// textMessage: 'Yo'})
 					return (
-						<div className="container jumbotron" style={inlineStyles}>
-							<h3>{this.state.textMessage}</h3>
-							<SubMessage/>
+						<div className="container well jumbotron btn btn-primary " style={inlineStyles}>
+							<h3>Hello World inside the top level component</h3>
+
+							{ technologies }
 						</div>
 					);
 				} 
 			});
-			//include other components in another component as a sibling node
+
+			//Sublevel - Component include other components in another component as a sibling node
 			var SubMessage = React.createClass({
+
+				//set the validation for the props
+				propTypes: {
+					message: React.PropTypes.string.isRequired
+				},
+
+				//set default props in the sublevel component
+				getDefaultProps: function(){
+					return{
+						message: 'This message is from the sub level component'
+					}
+				},
+
+				//change the hardcoded-text to expression - message 
 				render: function(){
 					return (
 						<div>
-							<small>A ReactJS Sample Program</small>
+							<small>{this.props.message}</small>
 						</div>
 					); 
 				}
 			}); 
+			
+			var message = "Hello World from outside the components space!";
 
-			// without JSX to create HTML nodes, React.DOM will help, the syntax is just the varying factor
-			/**
-			Single Node Component
-			var MessageDOM = React.createClass({
-				render: function(){
-					// the first is the parameters, the second is the text
-					return React.DOM.h1(null,'Hello World');
-				}
-			});
-			//nested component - arg array of child nodes
-			var MessageNestDOM = React.createClass({
-				render: function(){
-					return React.DOM.div(
-					{className: 'container'},
-					React.DOM.h1(null, 'Hello World'),
-					SubMessage(null)
-					)
-				}
-			});
-
-				*/
-		
 			var reactComponentJSX = React.render( 
-				<MessageJSX/>,
+				<MessageJSX titleMessage={message}/>,
 				document.getElementById('jsx')
 			);
-
-			// call the MessageDOM variable as a function 
-			/**
-			var reactComponentDOM = React.renderComponent(
-				MessageDOM('Hello World'),
-				document.getElementById('jsx')
-			);*/ 
 		</script>
+
+
+		<!-- 
+		perform the below steps on the console'
+
+		var newArray = reactComponentJSX.state.technologies.concat('Backbone is also a technology');
+
+		newArray
+		["Spring assists in making http calls", "NodeJS is a full stack technology", "AngularJS and Ember are on the same track??", "ReactJS is powerful as it has its own DOM", "Docker is powerful and is the future", "Backbone is also a technology"]
+
+		reactComponentJSX.setState({technologies:newArray}); -->
+
 	</body>
 </html>
