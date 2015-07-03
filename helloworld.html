@@ -22,6 +22,17 @@
 			/** @jsx React.DOM */
 			//top level component
 			var MessageJSX = React.createClass({
+
+				handleAdd: function(e){
+					var newItemValue = this.refs.newItem.getDOMNode().value;
+					console.log(newItemValue);
+					var newTechnologies = this.state.technologies.concat([newItemValue]);
+					this.setState({
+						technologies : newTechnologies 
+					});
+					this.refs.newItem.getDOMNode().value = '';
+				},
+
 				//here we can set the initial states
 				getInitialState: function() {
 					return {
@@ -43,6 +54,10 @@
 						marginTop : '20px'
 					}; 
 
+					var leftSpan = {
+						marginLeft : '20px'
+					}
+
 					// change the props of the submessage from here
 					var subMessage = "This is updated by the top level component";
  
@@ -54,9 +69,10 @@
 					// the state can also be set dynamically from the browsers console by reactComponentJSX.setState({isVisible: true,
 						// textMessage: 'Yo'})
 					return (
-						<div className="container well jumbotron btn btn-primary " style={inlineStyles}>
+						<div className="container well jumbotron" style={inlineStyles}>
 							<h3>Hello World inside the top level component</h3>
-
+							<input ref="newItem" type="text" />
+							<button className="btn btn-info" style={leftSpan} onClick={this.handleAdd}><i className="glyphicon glyphicon-plus"></i></button>
 							{ technologies }
 						</div>
 					);
@@ -99,13 +115,9 @@
 
 		<!-- 
 		perform the below steps on the console'
-
-		var newArray = reactComponentJSX.state.technologies.concat('Backbone is also a technology');
-
-		newArray
-		["Spring assists in making http calls", "NodeJS is a full stack technology", "AngularJS and Ember are on the same track??", "ReactJS is powerful as it has its own DOM", "Docker is powerful and is the future", "Backbone is also a technology"]
-
-		reactComponentJSX.setState({technologies:newArray}); -->
+		
+		reactComponentJSX.refs.newItem.getDOMNode() - returns the dom node of this particular refs item
+		 -->
 
 	</body>
 </html>
