@@ -7,46 +7,72 @@
 	<body>
 
 		<!-- container node -->
-		<div id="app"></div>
+		<div id="jsx"></div>
 
+		<!-- container node -->
+		<div id="dom"></div>
+		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
 
 		<script type="text/jsx">
-			// Have to include the pragma, for the JSX transformer to know we are writing the JSX here, links the JS & JSX
 			
-			
-			// we are just defining the component - just setting up the blueprint
-			// createClass just defines the component and we need to render the blueprint to create that tangible component on the DOM
-			// createClass has the object literal which contain function that helps to find the component
-			// most of the functions are optional except render
-			var Message = React.createClass({
-				
-				//the render method this is where we describe the components eventual structure in the DOM and we write the JSX
-				//returns a node
+			// no need of pragma to specify
+			/** @jsx React.DOM */
+			var MessageJSX = React.createClass({
+				render: function(){
+					return (
+						<div className="container">
+							<h3>Hello World</h3>
+						</div>
+					);
+				} 
+			});
+			//include other components in another component as a sibling node
+			var SubMessage = React.createClass({
+				render: function(){
+					return (
+						<div>
+							<small>A ReactJS Sample Program</small>
+							<MessageJSX/>
+						</div>
+					); 
+				}
+			}); 
 
-				// all these definitions (createClass) are functions that renders out components 
-				// and hence can only return only root node from the render function and not multiplefunctions
-				// to return multiple nodes we need to wrap these in a div
-				// the div should be written in same line beside return keyword or just keep ( after return keyword)
-			
-				// this function will NOT render to the DOM	
-				render : function(){
-					// the jsx function returns each of these HTML nodes into a function
-	 				return <h4>Hello, World</h4>;
+			// without JSX to create HTML nodes, React.DOM will help, the syntax is just the varying factor
+			/**
+			Single Node Component
+			var MessageDOM = React.createClass({
+				render: function(){
+					// the first is the parameters, the second is the text
+					return React.DOM.h1(null,'Hello World');
+				}
+			});
+			//nested component - arg array of child nodes
+			var MessageNestDOM = React.createClass({
+				render: function(){
+					return React.DOM.div(
+					{className: 'container'},
+					React.DOM.h1(null, 'Hello World'),
+					SubMessage(null)
+					)
 				}
 			});
 
-			// to render the above created component on to the DOM
-			// component as the first parameter 
-			// html node as the container, all the contents will be replace with the react component
-			// call back after the component finished rendering
-			React.render(
-				<Message/>,
-				document.getElementById('app'),
-				function(){
-					console.log("Finished rendering the component"); 
-				}
-			 )
+				*/
+		
+			var reactComponentJSX = React.render( 
+				<SubMessage/>,
+				document.getElementById('jsx')
+			);
 
+			// call the MessageDOM variable as a function 
+			/**
+			var reactComponentDOM = React.renderComponent(
+				MessageDOM('Hello World'),
+				document.getElementById('jsx')
+			);*/ 
 		</script>
+	</body>
+</html>
