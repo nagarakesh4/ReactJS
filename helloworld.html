@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>React - Hello World</title>
+	</head>
+	<body>
+
+		<!-- container node -->
+		<div id="app"></div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+
+		<script type="text/jsx">
+			// Have to include the pragma, for the JSX transformer to know we are writing the JSX here, links the JS & JSX
+			
+			
+			// we are just defining the component - just setting up the blueprint
+			// createClass just defines the component and we need to render the blueprint to create that tangible component on the DOM
+			// createClass has the object literal which contain function that helps to find the component
+			// most of the functions are optional except render
+			var Message = React.createClass({
+				
+				//the render method this is where we describe the components eventual structure in the DOM and we write the JSX
+				//returns a node
+
+				// all these definitions (createClass) are functions that renders out components 
+				// and hence can only return only root node from the render function and not multiplefunctions
+				// to return multiple nodes we need to wrap these in a div
+				// the div should be written in same line beside return keyword or just keep ( after return keyword)
+			
+				// this function will NOT render to the DOM	
+				render : function(){
+					// the jsx function returns each of these HTML nodes into a function
+	 				return <h4>Hello, World</h4>;
+				}
+			});
+
+			// to render the above created component on to the DOM
+			// component as the first parameter 
+			// html node as the container, all the contents will be replace with the react component
+			// call back after the component finished rendering
+			React.render(
+				<Message/>,
+				document.getElementById('app'),
+				function(){
+					console.log("Finished rendering"); 
+				}
+			 )
+
+		</script>
