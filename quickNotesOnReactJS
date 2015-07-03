@@ -1,0 +1,90 @@
+react is for developing user interfaces
+can be viewed in mvc
+goals : developing a large scale SPA easier
+high speed virtual DOM, whenever a change happens the virtual dom rerenders the DOM
+
+DOM - Rapid DOM Rendering speed
+reading and writing to DOM is slow where as to JS is faster
+
+react never reads from DOM, and writes to real DOM only when needed
+react virtual DOM is a JS Object
+
+we read and write to DOM from JS
+
+Backbone : we rerender the same data over and over again, even when changes dont happen we rerender which slows the app a lot, but react is very fast as react communicates with the virtual DOM (JS Object) instead of the real DOM
+
+when we use getDOMNode() - we get state info from virtual DOM, When we call the render(), react will update the virtual DOM which will push only the necessary change to the real DOM
+
+REACT
+JS LOGIC <-> React VIRTUAL DOM -> DOM
+
+Extension : React detector, React developer tool (identifies what are the react elements on the web page)
+
+
+Rather than using the inbrowser transformer of JSX to JS, we should preprocess this approach.
+The JSX transformer preprocess the JSX into plain JavaScript at runtime which slows down the app, but if we transform before the runtime we can make our app faster!
+
+jsx src/ build/ 
+the build will build the jsx to pure js
+
+react components are composable, we can either create the entire page with react or just few components using react (airbing built only price slider and search bar with react)
+
+reusing react components
+we don't want to preprocess the jsx every single time we run a file - makes sense! transformer is best for development but for production not suitable.
+
+we can add properties to components, making them dynamic
+return <div>
+    <h1>{this.props.text}</h1>
+    <p></p>
+</div>;
+
+state : When a component data is changed, then the render function of the component is called again to rerender the state change in the component.
+this.setState() - to invoke any user interface updates from event handlers
+
+refs, props
+
+map : the map() creates a new array by calling a function on every element in the array
+child components inherit states and props from their parents
+
+Component life cycle
+change in state will occur during component life time.
+Mounting:
+Creation, life time, tear down are provided by react during a componenet's life cycle.
+1. getDefaultProps() & 2. getInitialState() - are called once and both used for setting a default value for both props and state
+getInitialState: function() {
+        return {
+            notes: [
+            sample1,
+            sample2,
+            sample3
+           ]
+        };
+    },
+ 3. ComponentWillMount() is called right before the render - is the last chance to affect the state prior to render
+ 4. render() - is used
+ 5. ComponenetDidMount() - after succesful render the user can now interact with the DOM, DOM can now be accessed.
+
+Updating:
+1. componentWillRecieveProps() : When the state changes, the component can now update, when this method is called we get the opportunity to get the object and update the state.
+2. shouldComponentUpdate() & componentWillUpdate() - are invoked right before rendering and are used for enhancing the performance.
+3.render() - to update our component
+4. componentDidUpdate - will be fired when everything is updated in the DOM.
+
+UnMounting:
+1. componentWillUnmount() - is called right before the component is unmounted, helps in cleaning up DOM.
+
+$(this.getDOMNode()).draggable(); - drags the current DOM node which ever state it is in
+
+Hosting ReactJS App on a server:
+
+the package.json in nodejs uses CommonJS which describes the necessary libraries and functions to run an application
+
+npm init- creates package.json file
+
+httpster - lightweight server
+npm install --save httpster
+
+give the scripts as our required format
+"scripts": {
+    "start": "open http://localhost:4321 & httpster -p 4321"
+  }
