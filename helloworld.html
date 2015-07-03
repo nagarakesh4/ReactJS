@@ -3,6 +3,7 @@
 	<head>
 		<meta charset=utf-8>
 		<title>React - Hello World</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
 
@@ -20,10 +21,25 @@
 			// no need of pragma to specify
 			/** @jsx React.DOM */
 			var MessageJSX = React.createClass({
+				//here we can set the initial states
+				getInitialState: function() {
+					return {
+						isVisible: false,
+						textMessage: 'Hello World - ReactJS'
+					}
+				},
+
 				render: function(){
+					//here we can apply inline styles
+					var inlineStyles = {
+						display : this.state.isVisible ? 'block' : 'none'
+					};
+					// the state can also be set dynamically from the browsers console by reactComponentJSX.setState({isVisible: true,
+						// textMessage: 'Yo'})
 					return (
-						<div className="container">
-							<h3>Hello World</h3>
+						<div className="container jumbotron" style={inlineStyles}>
+							<h3>{this.state.textMessage}</h3>
+							<SubMessage/>
 						</div>
 					);
 				} 
@@ -34,7 +50,6 @@
 					return (
 						<div>
 							<small>A ReactJS Sample Program</small>
-							<MessageJSX/>
 						</div>
 					); 
 				}
@@ -63,7 +78,7 @@
 				*/
 		
 			var reactComponentJSX = React.render( 
-				<SubMessage/>,
+				<MessageJSX/>,
 				document.getElementById('jsx')
 			);
 
