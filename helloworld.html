@@ -15,21 +15,34 @@
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
 		<script type="text/jsx">
-			
+			var leftSpan = {
+						marginLeft : '20px'
+					}
 			// no need of pragma to specify
 			/** @jsx React.DOM */
 			//top level component
 			var MessageJSX = React.createClass({
 
-				handleAdd: function(e){
-					var newItemValue = this.refs.newItem.getDOMNode().value;
-					console.log(newItemValue);
-					var newTechnologies = this.state.technologies.concat([newItemValue]);
+				deleteItem: function(technology){
+					console.log("deleting the item..."+technology);
+
+					//get the technologies array and use lodash _.without(array, item)
+					var newTechnologies = _.without(this.state.technologies, technology);
 					this.setState({
 						technologies : newTechnologies 
 					});
+				},
+
+				handleAdd: function(e){
+					var newItemValue = this.refs.newItem.getDOMNode().value;
+					var newTechnologies = this.state.technologies.concat([newItemValue]);
+					// set the technologies value to the new technologies list
+					this.setState({
+						technologies : newTechnologies 
+					});
+
 					this.refs.newItem.getDOMNode().value = '';
 				},
 
@@ -54,17 +67,15 @@
 						marginTop : '20px'
 					}; 
 
-					var leftSpan = {
-						marginLeft : '20px'
-					}
+					
 
 					// change the props of the submessage from here
 					var subMessage = "This is updated by the top level component";
  
 					//retrieve the above created map
 					var technologies = this.state.technologies.map(function(technology){
-						return <SubMessage message={technology}/>
-					});
+						return <SubMessage message={technology}  deleteItem={this.deleteItem}/>
+					}.bind(this));
 
 					// the state can also be set dynamically from the browsers console by reactComponentJSX.setState({isVisible: true,
 						// textMessage: 'Yo'})
@@ -81,6 +92,10 @@
 
 			//Sublevel - Component include other components in another component as a sibling node
 			var SubMessage = React.createClass({
+
+				handleDelete: function(e){
+					this.props.deleteItem(this.props.message) ;
+				},
 
 				//set the validation for the props
 				propTypes: {
@@ -99,6 +114,7 @@
 					return (
 						<div>
 							<small>{this.props.message}</small>
+							<button className="btn btn-danger" style={leftSpan} onClick={this.handleDelete}><i className="glyphicon glyphicon-trash"></i></button>
 						</div>
 					); 
 				}
