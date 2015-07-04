@@ -12,7 +12,8 @@
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> 
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		
 		<script type="text/jsx">
 		/** @jsx React.DOM */
@@ -36,6 +37,7 @@
 					this.setState({
 						metric: data
 					});
+				$('#bootstrapTip').tooltip();  
 				}.bind(this));
 			},
 
@@ -61,6 +63,13 @@
 				return nextState.metric > 145;
 			},
 
+			//this method is used to perform any cleanup when a component has to be removed from the DOM
+			// to remove a component in console : React.unmountComponentAtNode(document.getElementById('componentId'))
+			componentWillUnmount: function(){
+				debugger;
+				$('#bootstrapTip').tooltip('destroy');  
+			},
+
 			getInitialState: function(){
 				return{
 					metric: 0,
@@ -70,8 +79,9 @@
 
 			render: function(){
 				return(
-					<div className="jumbotron">
+					<div className="well jumbotron">
 						<h2>Last Url was : {this.state.lastRoute}</h2>
+						<a id="bootstrapTip" href="#" data-toggle="toolTip" title="This is the tooltip feature from Bootstrap">Bootstrap Hover!</a> 
 						<h3>The New Metric : {this.state.metric}</h3>
 					</div>
 				);
