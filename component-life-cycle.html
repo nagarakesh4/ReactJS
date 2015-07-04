@@ -20,36 +20,59 @@
 		var DashBoard = React.createClass({
 
 			//load data
-			loadData: function(){
-				return $.get('https://test-react.firebaseio.com/' + this.props.url + '.json ');
+			loadData: function(url){
+				return $.get('https://test-react.firebaseio.com/' + url + '.json ');
 			},
 
 			//before the component is mounted
 			componentWillMount: function(){
-				debugger;
+				
 			},
 
 			//after the component is mounted and now we will have access to this.getDOMNode
 			//this function primary purpose is to setup any initial request in the state
 			componentDidMount: function(){
-				debugger;
-				this.loadData().then(function(data){
+				this.loadData(this.props.url).then(function(data){
 					this.setState({
 						metric: data
 					});
 				}.bind(this));
 			},
 
+			//this method is fired as soon as it sees changes in the props
+			// we will retrieve new props and check them against old one's
+			componentWillReceiveProps: function(nextProps){
+				//this.props.url gives access to old url, this method is invoked as soon as the props change , test this from console
+				//dashComponent.setProps({url : 'url'});
+				var lastUrl = this.props.url;
+				this.loadData(nextProps.url).then(function(data){
+					this.setState({
+						lastRoute: lastUrl,
+						metric: data
+					});
+				}.bind(this));
+			},
+
+			//this method is fired if there is any change in the props and decides to re-render the component or not based on the return value
+			//controls the re-render of a component
+			shouldComponentUpdate: function(nextProps, nextState){
+				if(nextState.metric < 100)
+					console.log("will not re-render as the metric is less than 100")
+				return nextState.metric > 145;
+			},
+
 			getInitialState: function(){
 				return{
 					metric: 0,
-				}
+					lastRoute: 'metric'
+				}; 
 			},
 
 			render: function(){
 				return(
 					<div className="jumbotron">
-					<h3>{this.state.metric}</h3>
+						<h2>Last Url was : {this.state.lastRoute}</h2>
+						<h3>The New Metric : {this.state.metric}</h3>
 					</div>
 				);
 			}

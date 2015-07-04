@@ -21,24 +21,24 @@
 
 				getInitialState: function(){
 					return{
-						payment: 0,
-						payment2: 0,
+						first: 0,
+						second: 0,
 					};
 				},
 
 				render: function(){
-					var total = parseInt(this.state.payment, 10) + parseInt(this.state.payment2, 10);
+					var total = parseInt(this.state.first, 10) + parseInt(this.state.second, 10);
 					return(
 						<div>
-							<Payment valueLink={this.linkState('payment')}/>
-							<Payment valueLink={this.linkState('payment2')}/>
-							{this.state.payment}
+							<Addition valueLink={this.linkState('first')}/>
+							<Addition valueLink={this.linkState('second')}/>
+							{total}
 						</div>
 					);
 				}
 			});
 
-			var Payment = React.createClass({
+			var Addition = React.createClass({
 				render: function(){
 					return (
 						<input type="text" />
