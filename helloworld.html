@@ -25,10 +25,9 @@
 			//top level component
 			var MessageJSX = React.createClass({
 
+				// this will be triggered once the deleteItem props in the sub level component is triggered.
 				deleteItem: function(technology){
-					console.log("deleting the item..."+technology);
-
-					//get the technologies array and use lodash _.without(array, item)
+					//get the technologies array and use lodash _.without(array, item) - removes the item from list on all the occurences
 					var newTechnologies = _.without(this.state.technologies, technology);
 					this.setState({
 						technologies : newTechnologies 
@@ -67,13 +66,15 @@
 						marginTop : '20px'
 					}; 
 
-					
-
 					// change the props of the submessage from here
 					var subMessage = "This is updated by the top level component";
  
 					//retrieve the above created map
 					var technologies = this.state.technologies.map(function(technology){
+						// the context of the keyword "this" at this point will just be the window but not the sublevel component
+						
+						// to change the context of "this" in "this.deleteItem" we need to bind it using this because here "this" is the component and knows how to delete message 
+
 						return <SubMessage message={technology}  deleteItem={this.deleteItem}/>
 					}.bind(this));
 
@@ -93,6 +94,7 @@
 			//Sublevel - Component include other components in another component as a sibling node
 			var SubMessage = React.createClass({
 
+				//this method just calls the top level component which will trigger the one way flow of data again using the call-back function feature
 				handleDelete: function(e){
 					this.props.deleteItem(this.props.message) ;
 				},
