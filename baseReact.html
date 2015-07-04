@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>React - Hello World</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+
+		<!-- container node -->
+		<div id="jsx"></div>
+
+		<!-- container node -->
+		<div id="dom"></div>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
+		<script type="text/jsx">
+			var leftSpan = {
+						marginLeft : '20px'
+					}
+			// no need of pragma to specify
+			/** @jsx React.DOM */
+			//top level component
+			var MessageJSX = React.createClass({
+
+				// this will be triggered once the deleteItem props in the sub level component is triggered.
+				deleteItem: function(technology){
+					//get the technologies array and use lodash _.without(array, item) - removes the item from list on all the occurences
+					var newTechnologies = _.without(this.state.technologies, technology);
+					this.setState({
+						technologies : newTechnologies 
+					});
+				},
+
+				handleAdd: function(e){
+					var newItemValue = this.refs.newItem.getDOMNode().value;
+					var newTechnologies = this.state.technologies.concat([newItemValue]);
+					// set the technologies value to the new technologies list
+					this.setState({
+						technologies : newTechnologies 
+					});
+
+					this.refs.newItem.getDOMNode().value = '';
+				},
+
+				//here we can set the initial states
+				getInitialState: function() {
+					return {
+						isVisible: true,
+						technologies: [
+									'Spring assists in making http calls',
+									'NodeJS is a full stack technology',
+									'AngularJS and Ember are on the same track??',
+									'ReactJS is powerful as it has its own DOM',
+									'Docker is powerful and is the future'
+								]
+					}
+				},
+
+				render: function(){
+					//here we can apply inline styles
+					var inlineStyles = {
+						display : this.state.isVisible ? 'block' : 'none',
+						marginTop : '20px'
+					}; 
+
+					// change the props of the submessage from here
+					var subMessage = "This is updated by the top level component";
+ 
+					//retrieve the above created map
+					var technologies = this.state.technologies.map(function(technology){
+						// the context of the keyword "this" at this point will just be the window but not the sublevel component
+						
+						// to change the context of "this" in "this.deleteItem" we need to bind it using this because here "this" is the component and knows how to delete message 
+
+						return <SubMessage message={technology}  deleteItem={this.deleteItem}/>
+					}.bind(this));
+
+					// the state can also be set dynamically from the browsers console by reactComponentJSX.setState({isVisible: true,
+						// textMessage: 'Yo'})
+					return (
+						<div className="container well jumbotron" style={inlineStyles}>
+							<h3>Hello World inside the top level component</h3>
+							<input ref="newItem" type="text" />
+							<button className="btn btn-info" style={leftSpan} onClick={this.handleAdd}><i className="glyphicon glyphicon-plus"></i></button>
+							{ technologies }
+						</div>
+					);
+				} 
+			});
+
+			//Sublevel - Component include other components in another component as a sibling node
+			var SubMessage = React.createClass({
+
+				//this method just calls the top level component which will trigger the one way flow of data again using the call-back function feature
+				handleDelete: function(e){
+					this.props.deleteItem(this.props.message) ;
+				},
+
+				//set the validation for the props
+				propTypes: {
+					message: React.PropTypes.string.isRequired
+				},
+
+				//set default props in the sublevel component
+				getDefaultProps: function(){
+					return{
+						message: 'This message is from the sub level component'
+					}
+				},
+
+				//change the hardcoded-text to expression - message 
+				render: function(){
+					return (
+						<div>
+							<small>{this.props.message}</small>
+							<button className="btn btn-danger" style={leftSpan} onClick={this.handleDelete}><i className="glyphicon glyphicon-trash"></i></button>
+						</div>
+					); 
+				}
+			}); 
+			
+			var message = "Hello World from outside the components space!";
+
+			var reactComponentJSX = React.render( 
+				<MessageJSX titleMessage={message}/>,
+				document.getElementById('jsx')
+			);
+		</script>
+
+
+		<!-- 
+		perform the below steps on the console'
+		
+		reactComponentJSX.refs.newItem.getDOMNode() - returns the dom node of this particular refs item
+		 -->
+
+	</body>
+</html>
