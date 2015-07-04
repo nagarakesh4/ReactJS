@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>React - Hello World</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+
+		<!-- container node -->
+		<div id="app"></div>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react-with-addons.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+		
+		<script type="text/jsx">
+
+			var App = React.createClass({
+
+				//mixin is a reausable piece of code can be used in any component
+				mixins: [React.addons.LinkedStateMixin], 
+
+				getInitialState: function(){
+					return{
+						payment: 0,
+						payment2: 0,
+					};
+				},
+
+				render: function(){
+					var total = parseInt(this.state.payment, 10) + parseInt(this.state.payment2, 10);
+					return(
+						<div>
+							<Payment valueLink={this.linkState('payment')}/>
+							<Payment valueLink={this.linkState('payment2')}/>
+							{this.state.payment}
+						</div>
+					);
+				}
+			});
+
+			var Payment = React.createClass({
+				render: function(){
+					return (
+						<input type="text" />
+					);
+				}
+			});
+
+			React.render(
+				<App />,
+				document.getElementById('app')
+			)
+
+		</script>
+	</body>
+</html>	
