@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>React - Hello World</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+
+		<!-- container node -->
+		<div id="app"></div>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		
+		<script type="text/jsx">
+		/** @jsx React.DOM */
+
+		var DashBoard = React.createClass({
+
+			//load data
+			loadData: function(){
+				return $.get('https://test-react.firebaseio.com/' + this.props.url + '.json ');
+			},
+
+			//before the component is mounted
+			componentWillMount: function(){
+				debugger;
+			},
+
+			//after the component is mounted and now we will have access to this.getDOMNode
+			//this function primary purpose is to setup any initial request in the state
+			componentDidMount: function(){
+				debugger;
+				this.loadData().then(function(data){
+					this.setState({
+						metric: data
+					});
+				}.bind(this));
+			},
+
+			getInitialState: function(){
+				return{
+					metric: 0,
+				}
+			},
+
+			render: function(){
+				return(
+					<div className="jumbotron">
+					<h3>{this.state.metric}</h3>
+					</div>
+				);
+			}
+		});
+
+		var dashComponent= React.render(
+			<DashBoard url="metric"/>,
+			document.getElementById('app')
+		)
+
+
+		</script>
+	</body>
+</html>
