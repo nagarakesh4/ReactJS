@@ -1,4 +1,5 @@
-# ReactJS - Application
-A flux paradigm app to be built using ReactJS.
+# Getting Started with ReactJS
+This project focuses on the concepts of ReactJS implementing its various features.
 
-Implementing ReactJS features along with Firebase and bootstrap integration.
+Used Technologies :
+HTML5, JavaScript, ReactJS, Firebase, Bootstrap, jQuery
